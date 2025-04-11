@@ -6,6 +6,9 @@ async function bootstrap() {
   // Load dotenv config
   require('dotenv').config();
 
+  // Load Solarwinds APM
+  require('solarwinds-apm');
+
   // Start app
   const app = await NestFactory.create(AppModule.register());
   app.enableCors();
