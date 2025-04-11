@@ -24,7 +24,7 @@
     "@nestjs/core": "^11.0.11",
     "@nestjs/platform-express": "^11.0.11",
     "@nestjs/typeorm": "^11.0.0",
-    "@thefirstspine/logs-nest": "8.1.4",
+    "@thefirstspine/logs-nest": "9.0.1",
     "@types/uniqid": "^5.3.4",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
