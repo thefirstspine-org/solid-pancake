@@ -26,7 +26,6 @@
     "@nestjs/typeorm": "^11.0.0",
     "@thefirstspine/logs-nest": "9.0.2",
     "@types/uniqid": "^5.3.4",
-    "appoptics-apm": "^10.2.2",
     "class-validator": "^0.14.1",
     "dotenv": "^16.5.0",
     "pg": "^8.14.1",
