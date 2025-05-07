@@ -28,11 +28,11 @@ class Sirup {
    */
   async persistantSession(product, label = '', version = '') {
     // Get the local storage key
-    const localstorageKey = `sirup-session-${product}-${label}-${version}`;
+    const sessionStorageKey = `sirup-session-${product}-${label}-${version}`;
 
     // Get persisted session ID
-    const sessionIdPersistant: string|undefined = localStorage.getItem(localstorageKey);
-    if (sessionIdPersistant) {
+    const sessionIdPersistant: string|undefined = sessionStorage.getItem(sessionStorageKey);
+    if (sessionIdPersistant != undefined) {
       const sessionIdPersistantObject = JSON.parse(sessionIdPersistant);
       if (sessionIdPersistantObject) {
         this.sessionId = sessionIdPersistantObject.sessionId;
@@ -44,7 +44,7 @@ class Sirup {
     await this.session(product, label, version);
 
     // Persist session
-    localStorage.setItem(localstorageKey, JSON.stringify({sessionId: this.sessionId}));
+    sessionStorage.setItem(sessionStorageKey, JSON.stringify({sessionId: this.sessionId}));
   }
 
   /**
