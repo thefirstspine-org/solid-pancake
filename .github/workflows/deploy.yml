@@ -40,9 +40,7 @@ jobs:
           rm -rf volume/keys
           mv tmp/conf volume/conf
           mv tmp/keys volume/keys
-      - name: Build Docker image
+      - name: Build and run thefirstspine-org-ansible image
         run: |
-          docker build -t thefirstspine/ansible .
-      - name: Run thefirstspine/ansible image
-        run: |
-          docker run --rm -v ./volume:/volume -e BRANCH=${GITHUB_REF#refs/*/} thefirstspine/ansible ansible-playbook -i /volume/conf/inventory.yaml /volume/playbooks/deploy-solid-pancake.yaml
+          docker build . -t thefirstspine-org-ansible &&
+          docker run --rm -v ./volume:/volume -e BRANCH=${GITHUB_REF#refs/*/} thefirstspine-org-ansible ansible-playbook -i /volume/conf/inventory.yaml /volume/playbooks/deploy-solid-pancake.yaml
