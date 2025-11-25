@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [tests]
     steps:
-      - name: 🚧 Set short commit SHA and ENV
+      - name: Set short commit SHA and ENV
         run: |
           echo "TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
           if [ "${GITHUB_REF}" = "refs/heads/master" ]; then
@@ -43,7 +43,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.registry_token }}
-      - name: 🛠️ Build & Push Docker image
+      - name: Build & Push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -75,35 +75,34 @@ jobs:
       - name: Ansible inventory builder (dev)
         if: env.ENV == 'dev'
         run: |
-          echo "
-            # Auto-generated file - do not edit
-            apps:
-              hosts:
-                app:
-                  # SSH agent settings
-                  ansible_connection: ssh
-                  ansible_ssh_host: ${{ secrets.ansible_conf_ansible_ssh_host_dev }}
-                  ansible_ssh_user: ${{ secrets.ansible_conf_ansible_ssh_user_dev }}
-                  ansible_ssh_private_key_file: volume/keys/id_ansible_dev
-                  ansible_ssh_host_key_checking:false
-                  ansible_ssh_common_args:-o StrictHostKeyChecking=no
-                  # Image settings
-                  registry: ghcr.io
-                  registry_username: ${{ github.actor }}
-                  registry_password: ${{ secrets.registry_token }}
-                  image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
-                  # Container env
-                  env: dev
-                  pg_database: ${{ secrets.ansible_conf_pg_database_dev }}
-                  pg_host: ${{ secrets.ansible_conf_pg_host_dev }}
-                  pg_port: ${{ secrets.ansible_conf_pg_port_dev }}
-                  pg_password: ${{ secrets.ansible_conf_pg_password_dev }}
-                  pg_username: ${{ secrets.ansible_conf_pg_username_dev }}
-                  # Host settings
-                  external_port:8080
-                  internal_port:8090
-                  domain: dev.solid-pancake.thefirstspine.fr
-                  cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
+          echo "# Auto-generated file - do not edit
+          apps:
+            hosts:
+              app:
+                # SSH agent settings
+                ansible_connection: ssh
+                ansible_ssh_host: ${{ secrets.ansible_conf_ansible_ssh_host_dev }}
+                ansible_ssh_user: ${{ secrets.ansible_conf_ansible_ssh_user_dev }}
+                ansible_ssh_private_key_file: volume/keys/id_ansible_dev
+                ansible_ssh_host_key_checking:false
+                ansible_ssh_common_args:-o StrictHostKeyChecking=no
+                # Image settings
+                registry: ghcr.io
+                registry_username: ${{ github.actor }}
+                registry_password: ${{ secrets.registry_token }}
+                image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                # Container env
+                env: dev
+                pg_database: ${{ secrets.ansible_conf_pg_database_dev }}
+                pg_host: ${{ secrets.ansible_conf_pg_host_dev }}
+                pg_port: ${{ secrets.ansible_conf_pg_port_dev }}
+                pg_password: ${{ secrets.ansible_conf_pg_password_dev }}
+                pg_username: ${{ secrets.ansible_conf_pg_username_dev }}
+                # Host settings
+                external_port:8080
+                internal_port:8090
+                domain: dev.solid-pancake.thefirstspine.fr
+                cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           " > volume/conf/inventory.yaml
       - name: Write keys (dev)
         if: env.ENV == 'dev'
@@ -112,36 +111,35 @@ jobs:
       - name: Ansible inventory builder (prod)
         if: env.ENV == 'prod'
         run: |
-          echo "
-            # Auto-generated file - do not edit
-            apps:
-              hosts:
-                app:
-                  # SSH agent settings
-                  ansible_connection: ssh
-                  ansible_ssh_host: ${{ secrets.ansible_conf_ansible_ssh_host_prod }}
-                  ansible_ssh_user: ${{ secrets.ansible_conf_ansible_ssh_user_prod }}
-                  ansible_ssh_private_key_file: volume/keys/id_ansible_prod
-                  ansible_ssh_host_key_checking:false
-                  ansible_ssh_common_args:-o StrictHostKeyChecking=no
-                  # Image settings
-                  registry: ghcr.io
-                  registry_username: ${{ github.actor }}
-                  registry_password: ${{ secrets.registry_token }}
-                  image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
-                  # Container env
-                  env: prod
-                  # Container env
-                  pg_database: ${{ secrets.ansible_conf_pg_database_prod }}
-                  pg_host: ${{ secrets.ansible_conf_pg_host_prod }}
-                  pg_port: ${{ secrets.ansible_conf_pg_port_prod }}
-                  pg_password: ${{ secrets.ansible_conf_pg_password_prod }}
-                  pg_username: ${{ secrets.ansible_conf_pg_username_prod }}
-                  # Host settings
-                  external_port:8080
-                  internal_port:8090
-                  domain: prod.solid-pancake.thefirstspine.fr
-                  cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
+          echo "# Auto-generated file - do not edit
+          apps:
+            hosts:
+              app:
+                # SSH agent settings
+                ansible_connection: ssh
+                ansible_ssh_host: ${{ secrets.ansible_conf_ansible_ssh_host_prod }}
+                ansible_ssh_user: ${{ secrets.ansible_conf_ansible_ssh_user_prod }}
+                ansible_ssh_private_key_file: volume/keys/id_ansible_prod
+                ansible_ssh_host_key_checking:false
+                ansible_ssh_common_args:-o StrictHostKeyChecking=no
+                # Image settings
+                registry: ghcr.io
+                registry_username: ${{ github.actor }}
+                registry_password: ${{ secrets.registry_token }}
+                image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                # Container env
+                env: prod
+                # Container env
+                pg_database: ${{ secrets.ansible_conf_pg_database_prod }}
+                pg_host: ${{ secrets.ansible_conf_pg_host_prod }}
+                pg_port: ${{ secrets.ansible_conf_pg_port_prod }}
+                pg_password: ${{ secrets.ansible_conf_pg_password_prod }}
+                pg_username: ${{ secrets.ansible_conf_pg_username_prod }}
+                # Host settings
+                external_port:8080
+                internal_port:8090
+                domain: prod.solid-pancake.thefirstspine.fr
+                cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           " > volume/conf/inventory.yaml
       - name: Write keys (prod)
         if: env.ENV == 'prod'
