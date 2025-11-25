@@ -7,19 +7,19 @@ on:
       # - 'master'
 jobs:
   tests:
-    name: ▶️ Tests
+    name: 🧪 Tests
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: ✨ Install
+      - name: Install
         run: npm install
-      - name: 🩺 Testing
+      - name: Testing
         run: npm run test
   build-push:
-    name: ▶️ Build & push
+    name: 🔥 Build & push
     runs-on: ubuntu-latest
     needs: [tests]
     steps:
@@ -33,7 +33,7 @@ jobs:
           else
             echo "ENV=dev" >> $GITHUB_ENV
           fi
-      - name: ⬇️ Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -52,11 +52,11 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache
           cache-to: type=inline
   deploy:
-    name: ▶️ Deploy
+    name: 🚀 Deploy
     needs: [build-push]
     runs-on: ubuntu-latest
     steps:
-      - name: 🚧 Set short commit SHA and ENV
+      - name: Set short commit SHA and ENV
         run: |
           echo "TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
           if [ "${GITHUB_REF}" = "refs/heads/master" ]; then
@@ -66,13 +66,13 @@ jobs:
           else
             echo "ENV=dev" >> $GITHUB_ENV
           fi
-      - name: ⬇️ Checkout Ansible
+      - name: Checkout Ansible
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           repository: thefirstspine/ansible
           ref: with-private-registries
-      - name: 🔐 Ansible inventory builder (dev)
+      - name: Ansible inventory builder (dev)
         if: env.ENV == 'dev'
         run: |
           echo "
@@ -102,14 +102,14 @@ jobs:
                   # Host settings
                   external_port:8080
                   internal_port:8090
-                  domain: dev.${{ github.event.repository.name }}.thefirstspine.fr
+                  domain: dev.solid-pancake.thefirstspine.fr
                   cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           " > volume/conf/inventory.yaml
-      - name: 🔐 Write keys (dev)
+      - name: Write keys (dev)
         if: env.ENV == 'dev'
         run: |
           echo "${{ secrets.ansible_key_id_ansible_dev }}" > volume/keys/id_ansible
-      - name: 🔐 Ansible inventory builder (prod)
+      - name: Ansible inventory builder (prod)
         if: env.ENV == 'prod'
         run: |
           echo "
@@ -140,14 +140,20 @@ jobs:
                   # Host settings
                   external_port:8080
                   internal_port:8090
-                  domain: prod.${{ github.event.repository.name }}.thefirstspine.fr
+                  domain: prod.solid-pancake.thefirstspine.fr
                   cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           " > volume/conf/inventory.yaml
-      - name: 🔐 Write keys (prod)
+      - name: Write keys (prod)
         if: env.ENV == 'prod'
         run: |
           echo "${{ secrets.ansible_key_id_ansible_prod }}" > volume/keys/id_ansible
-      - name: 🤖 Ansible deploy
+      - name: Ansible deploy
         run: |
           docker build . -t thefirstspine-org-ansible &&
-          docker run --rm -v ./volume:/volume thefirstspine-org-ansible ansible-playbook -i /volume/conf/inventory.yaml /volume/playbooks/deploy-${{ github.event.repository.name }}.yaml
+          docker run \
+            --rm \
+            -v ./volume:/volume \
+            thefirstspine-org-ansible \
+            ansible-playbook \
+            -i /volume/conf/inventory.yaml \
+            /volume/playbooks/deploy-solid-pancake.yaml
