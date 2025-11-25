@@ -42,7 +42,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.github_token }}
+          password: ${{ secrets.registry_token }}
       - name: 🛠️ Build & Push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -90,7 +90,7 @@ jobs:
                   # Image settings
                   registry: ghcr.io
                   registry_username: ${{ github.actor }}
-                  registry_password: ${{ secrets.github_token }}
+                  registry_password: ${{ secrets.registry_token }}
                   image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
                   # Container env
                   env: dev
@@ -127,7 +127,7 @@ jobs:
                   # Image settings
                   registry: ghcr.io
                   registry_username: ${{ github.actor }}
-                  registry_password: ${{ secrets.github_token }}
+                  registry_password: ${{ secrets.registry_token }}
                   image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
                   # Container env
                   env: prod
