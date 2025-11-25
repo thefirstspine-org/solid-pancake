@@ -37,6 +37,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.github_token }}
       - name: 🛠️ Build & Push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -81,10 +87,13 @@ jobs:
                   ansible_ssh_private_key_file: volume/keys/id_ansible_dev
                   ansible_ssh_host_key_checking:false
                   ansible_ssh_common_args:-o StrictHostKeyChecking=no
-                  # Global settings
-                  docker_image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
-                  env: dev
+                  # Image settings
+                  registry: ghcr.io
+                  registry_username: ${{ secrets.github_actor }}
+                  registry_password: ${{ secrets.github_token }}
+                  image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
                   # Container env
+                  env: dev
                   pg_database: ${{ secrets.ansible_conf_pg_database_dev }}
                   pg_host: ${{ secrets.ansible_conf_pg_host_dev }}
                   pg_port: ${{ secrets.ansible_conf_pg_port_dev }}
@@ -115,8 +124,12 @@ jobs:
                   ansible_ssh_private_key_file: volume/keys/id_ansible_prod
                   ansible_ssh_host_key_checking:false
                   ansible_ssh_common_args:-o StrictHostKeyChecking=no
-                  # Global settings
-                  docker_image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                  # Image settings
+                  registry: ghcr.io
+                  registry_username: ${{ secrets.github_actor }}
+                  registry_password: ${{ secrets.github_token }}
+                  image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                  # Container env
                   env: prod
                   # Container env
                   pg_database: ${{ secrets.ansible_conf_pg_database_prod }}
