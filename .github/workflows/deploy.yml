@@ -183,12 +183,12 @@ jobs:
           sudo apt-get install -y gh
       - name: Authenticate gh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.registry_token }}
         run: echo "${GITHUB_TOKEN}" | gh auth login --with-token
       - name: Prune images older than 3 hours
         env:
           OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
+          REPO: ${{ github.repository }}
           THRESHOLD_SECS: 10800
         run: |
           set -eu
