@@ -163,8 +163,7 @@ jobs:
             thefirstspine-org-ansible \
             ansible-playbook \
             -i /volume/conf/inventory.yaml \
-            /volume/playbooks/deploy-solid-pancake.yaml \
-            -vvv
+            /volume/playbooks/deploy-solid-pancake.yaml
   prune-images:
     name: 🧹 Prune GHCR images older than 24h
     runs-on: ubuntu-latest
