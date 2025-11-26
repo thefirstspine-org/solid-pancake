@@ -90,7 +90,7 @@ jobs:
                 registry: ghcr.io
                 registry_username: ${{ github.actor }}
                 registry_password: ${{ secrets.registry_token }}
-                docker_image: ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                docker_image: 'ghcr.io/${{ github.repository }}:${{ env.TAG }}'
                 # Container env
                 env: dev
                 pg_database: ${{ secrets.ansible_conf_pg_database_dev }}
@@ -101,7 +101,7 @@ jobs:
                 # Host settings
                 external_port: 8080
                 internal_port: 8090
-                domain: dev.solid-pancake.thefirstspine.fr
+                domain: 'dev.solid-pancake.thefirstspine.fr'
                 cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           YAML
       - name: Write keys (dev)
@@ -126,7 +126,7 @@ jobs:
                 registry: ghcr.io
                 registry_username: ${{ github.actor }}
                 registry_password: ${{ secrets.registry_token }}
-                docker_image: ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                docker_image: 'ghcr.io/${{ github.repository }}:${{ env.TAG }}'
                 # Container env
                 env: prod
                 pg_database: ${{ secrets.ansible_conf_pg_database_prod }}
@@ -137,7 +137,7 @@ jobs:
                 # Host settings
                 external_port: 8080
                 internal_port: 8090
-                domain: prod.solid-pancake.thefirstspine.fr
+                domain: 'solid-pancake.thefirstspine.fr'
                 cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           YAML
       - name: Write keys (prod)
