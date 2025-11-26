@@ -90,7 +90,7 @@ jobs:
                 registry: ghcr.io
                 registry_username: ${{ github.actor }}
                 registry_password: ${{ secrets.registry_token }}
-                image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                image: ghcr.io/${{ github.repository }}:${{ env.TAG }}
                 # Container env
                 env: dev
                 pg_database: ${{ secrets.ansible_conf_pg_database_dev }}
@@ -99,8 +99,8 @@ jobs:
                 pg_password: ${{ secrets.ansible_conf_pg_password_dev }}
                 pg_username: ${{ secrets.ansible_conf_pg_username_dev }}
                 # Host settings
-                external_port:8080
-                internal_port:8090
+                external_port: 8080
+                internal_port: 8090
                 domain: dev.solid-pancake.thefirstspine.fr
                 cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           YAML
@@ -126,7 +126,7 @@ jobs:
                 registry: ghcr.io
                 registry_username: ${{ github.actor }}
                 registry_password: ${{ secrets.registry_token }}
-                image:ghcr.io/${{ github.repository }}:${{ env.TAG }}
+                image: ghcr.io/${{ github.repository }}:${{ env.TAG }}
                 # Container env
                 env: prod
                 pg_database: ${{ secrets.ansible_conf_pg_database_prod }}
@@ -135,8 +135,8 @@ jobs:
                 pg_password: ${{ secrets.ansible_conf_pg_password_prod }}
                 pg_username: ${{ secrets.ansible_conf_pg_username_prod }}
                 # Host settings
-                external_port:8080
-                internal_port:8090
+                external_port: 8080
+                internal_port: 8090
                 domain: prod.solid-pancake.thefirstspine.fr
                 cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
           YAML
@@ -154,3 +154,53 @@ jobs:
             ansible-playbook \
             -i /volume/conf/inventory.yaml \
             /volume/playbooks/deploy-solid-pancake.yaml
+  prune-images:
+    name: 🧹 Prune GHCR images older than 24h
+    needs: [build-push]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Install gh & jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y gh
+      - name: Authenticate gh
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      - name: Prune images older than 24 hours
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          THRESHOLD_SECS: 86400
+        run: |
+          set -eu
+          echo "Owner: $OWNER repo: $REPO"
+          for scope in orgs users; do
+            endpoint="/$scope/$OWNER/packages/container/$REPO/versions"
+            echo "Trying $endpoint"
+            data=$(gh api -H "Accept: application/vnd.github.v3+json" --paginate "$endpoint" 2>/dev/null || true)
+            if [ -n "$data" ] && [ "$data" != "null" ]; then
+              echo "Found package versions under $scope"
+              echo "$data" | jq -c '.[] | {id:.id,created_at:.created_at}' | while read -r item; do
+                id=$(echo "$item" | jq -r '.id')
+                created=$(echo "$item" | jq -r '.created_at')
+                created_ts=$(date -d "$created" +%s)
+                now_ts=$(date +%s)
+                age=$((now_ts - created_ts))
+                if [ "$age" -gt "$THRESHOLD_SECS" ]; then
+                  echo "Deleting version $id (age ${age}s, created $created)"
+                  gh api -X DELETE "$endpoint/$id" || echo "Delete failed for $id"
+                else
+                  echo "Keeping version $id (age ${age}s)"
+                fi
+              done
+              exit 0
+            fi
+          done
+          echo "No package versions found for container/$REPO"
