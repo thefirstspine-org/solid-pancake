@@ -31,7 +31,7 @@ jobs:
           now_ts=$(date +%s)
           echo "Pruning container package versions for $OWNER/$REPO older than $THRESHOLD_SECS seconds"
           for scope in orgs users; do
-            endpoint="/$scope/$OWNER/packages/container/$REPO/versions"
+            endpoint="/$scope/$OWNER/packages?package_type=container"
             echo "Listing $endpoint"
             data=$(gh api -H "Accept: application/vnd.github.v3+json" --paginate "$endpoint" 2>/dev/null || true)
             if [ -z "$data" ] || [ "$data" = "null" ]; then
