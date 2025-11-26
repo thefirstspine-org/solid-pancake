@@ -34,6 +34,7 @@ jobs:
             endpoint="/$scope/$OWNER/packages?package_type=container"
             echo "Listing $endpoint"
             data=$(gh api -H "Accept: application/vnd.github.v3+json" --paginate "$endpoint" 2>/dev/null || true)
+            echo "$data"
             if [ -z "$data" ] || [ "$data" = "null" ]; then
               echo "No data for $endpoint"
               continue
