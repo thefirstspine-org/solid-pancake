@@ -87,7 +87,7 @@ jobs:
                 ansible_ssh_host_key_checking: false
                 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
                 # Image settings
-                registry: ghcr.io
+                registry: 'ghcr.io'
                 registry_username: ${{ github.actor }}
                 registry_password: ${{ secrets.registry_token }}
                 docker_image: 'ghcr.io/${{ github.repository }}:${{ env.TAG }}'
@@ -123,7 +123,7 @@ jobs:
                 ansible_ssh_host_key_checking: false
                 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
                 # Image settings
-                registry: ghcr.io
+                registry: 'ghcr.io'
                 registry_username: ${{ github.actor }}
                 registry_password: ${{ secrets.registry_token }}
                 docker_image: 'ghcr.io/${{ github.repository }}:${{ env.TAG }}'
