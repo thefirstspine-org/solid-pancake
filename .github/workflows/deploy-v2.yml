@@ -43,12 +43,22 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.registry_token }}
-      - name: Build & Push Docker image
+      - name: Build & Push Docker image (prod)
         uses: docker/build-push-action@v4
+        if: env.ENV == 'prod'
         with:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ env.TAG }},ghcr.io/${{ github.repository }}:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache
+          cache-to: type=inline
+      - name: Build & Push Docker image (dev)
+        if: env.ENV == 'dev'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ env.TAG }},ghcr.io/${{ github.repository }}:latest-dev
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache
           cache-to: type=inline
   deploy:
@@ -148,7 +158,6 @@ jobs:
             /volume/playbooks/deploy-solid-pancake.yaml
   prune-images:
     name: 🧹 Prune GHCR images older than 24h
-    needs: [deploy]
     runs-on: ubuntu-latest
     permissions:
       packages: write
