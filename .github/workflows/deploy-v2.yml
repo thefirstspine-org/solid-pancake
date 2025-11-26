@@ -84,8 +84,8 @@ jobs:
                 ansible_ssh_host: ${{ secrets.ansible_conf_ansible_ssh_host_dev }}
                 ansible_ssh_user: ${{ secrets.ansible_conf_ansible_ssh_user_dev }}
                 ansible_ssh_private_key_file: volume/keys/id_ansible_dev
-                ansible_ssh_host_key_checking:false
-                ansible_ssh_common_args:-o StrictHostKeyChecking=no
+                ansible_ssh_host_key_checking: false
+                ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
                 # Image settings
                 registry: ghcr.io
                 registry_username: ${{ github.actor }}
@@ -120,8 +120,8 @@ jobs:
                 ansible_ssh_host: ${{ secrets.ansible_conf_ansible_ssh_host_prod }}
                 ansible_ssh_user: ${{ secrets.ansible_conf_ansible_ssh_user_prod }}
                 ansible_ssh_private_key_file: volume/keys/id_ansible_prod
-                ansible_ssh_host_key_checking:false
-                ansible_ssh_common_args:-o StrictHostKeyChecking=no
+                ansible_ssh_host_key_checking: false
+                ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
                 # Image settings
                 registry: ghcr.io
                 registry_username: ${{ github.actor }}
