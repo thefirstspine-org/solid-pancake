@@ -76,7 +76,6 @@ jobs:
         if: env.ENV == 'dev'
         run: |
           cat > ./volume/conf/inventory.yaml <<'YAML'
-          # Auto-generated file - do not edit
           apps:
             hosts:
               app:
@@ -113,7 +112,6 @@ jobs:
         if: env.ENV == 'prod'
         run: |
           cat > ./volume/conf/inventory.yaml <<'YAML'
-          # Auto-generated file - do not edit
           apps:
             hosts:
               app:
