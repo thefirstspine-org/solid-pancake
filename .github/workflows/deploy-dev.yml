@@ -1,8 +1,8 @@
 name: Deploy app (dev)
 on:
-  push:
-    branches:
-      - 'next'
+#   push:
+#     branches:
+#       - 'next'
   workflow_dispatch:
 jobs:
   tests:
