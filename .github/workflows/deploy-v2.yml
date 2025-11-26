@@ -89,22 +89,26 @@ jobs:
           apps:
             hosts:
               app:
+                # SSH agent settings
                 ansible_connection: ssh
                 ansible_ssh_host: '${{ secrets.ansible_conf_ansible_ssh_host_dev }}'
                 ansible_ssh_user: '${{ secrets.ansible_conf_ansible_ssh_user_dev }}'
                 ansible_ssh_private_key_file: 'volume/keys/id_ansible'
                 ansible_ssh_host_key_checking: false
                 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+                # Image settings
                 registry: 'ghcr.io'
                 registry_username: '${{ github.actor }}'
                 registry_password: '${{ secrets.registry_token }}'
                 docker_image: 'ghcr.io/${{ github.repository }}:${{ env.TAG }}'
+                # Container env
                 env: dev
                 pg_database: '${{ secrets.ansible_conf_pg_database_dev }}'
                 pg_host: '${{ secrets.ansible_conf_pg_host_dev }}'
                 pg_port: ${{ secrets.ansible_conf_pg_port_dev }}
                 pg_password: '${{ secrets.ansible_conf_pg_password_dev }}'
                 pg_username: '${{ secrets.ansible_conf_pg_username_dev }}'
+                # Host settings
                 external_port: 8080
                 internal_port: 8090
                 domain: 'dev.solid-pancake.thefirstspine.fr'
@@ -121,22 +125,26 @@ jobs:
           apps:
             hosts:
               app:
+                # SSH agent settings
                 ansible_connection: ssh
                 ansible_ssh_host: '${{ secrets.ansible_conf_ansible_ssh_host_prod }}'
                 ansible_ssh_user: '${{ secrets.ansible_conf_ansible_ssh_user_prod }}'
                 ansible_ssh_private_key_file: 'volume/keys/id_ansible'
                 ansible_ssh_host_key_checking: false
                 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+                # Image settings
                 registry: 'ghcr.io'
                 registry_username: '${{ github.actor }}'
                 registry_password: '${{ secrets.registry_token }}'
                 docker_image: 'ghcr.io/${{ github.repository }}:${{ env.TAG }}'
+                # Container env
                 env: prod
                 pg_database: '${{ secrets.ansible_conf_pg_database_prod }}'
                 pg_host: '${{ secrets.ansible_conf_pg_host_prod }}'
                 pg_port: ${{ secrets.ansible_conf_pg_port_prod }}
                 pg_password: '${{ secrets.ansible_conf_pg_password_prod }}'
                 pg_username: '${{ secrets.ansible_conf_pg_username_prod }}'
+                # Host settings
                 external_port: 8080
                 internal_port: 8090
                 domain: 'solid-pancake.thefirstspine.fr'
@@ -155,7 +163,8 @@ jobs:
             thefirstspine-org-ansible \
             ansible-playbook \
             -i /volume/conf/inventory.yaml \
-            /volume/playbooks/deploy-solid-pancake.yaml
+            /volume/playbooks/deploy-solid-pancake.yaml \
+            -vvv
   prune-images:
     name: 🧹 Prune GHCR images older than 24h
     runs-on: ubuntu-latest
