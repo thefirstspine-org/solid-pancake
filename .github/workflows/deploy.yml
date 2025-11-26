@@ -24,7 +24,7 @@ jobs:
       - name: Prune images older than 3 hours
         env:
           OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.repository }}
+          REPO: ${{ github.event.repository.name }}
           THRESHOLD_SECS: 10800
         run: |
           set -eu
