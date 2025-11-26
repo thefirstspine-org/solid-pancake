@@ -1,10 +1,10 @@
 name: Deploy app
 on:
   workflow_dispatch:
-  # push:
-    # branches:
-      # - 'next'
-      # - 'master'
+  push:
+    branches:
+      - 'next'
+      - 'master'
 jobs:
   tests:
     name: 🧪 Tests
