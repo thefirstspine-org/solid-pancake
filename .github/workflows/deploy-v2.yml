@@ -103,11 +103,11 @@ jobs:
                 internal_port:8090
                 domain: dev.solid-pancake.thefirstspine.fr
                 cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
-          " > volume/conf/inventory.yaml
+          " > ./volume/conf/inventory.yaml
       - name: Write keys (dev)
         if: env.ENV == 'dev'
         run: |
-          echo "${{ secrets.ansible_key_id_ansible_dev }}" > volume/keys/id_ansible
+          echo "${{ secrets.ansible_key_id_ansible_dev }}" > ./volume/keys/id_ansible
       - name: Ansible inventory builder (prod)
         if: env.ENV == 'prod'
         run: |
@@ -140,11 +140,11 @@ jobs:
                 internal_port:8090
                 domain: prod.solid-pancake.thefirstspine.fr
                 cerbot_email: ${{ secrets.ansible_conf_cerbot_email }}
-          " > volume/conf/inventory.yaml
+          " > ./volume/conf/inventory.yaml
       - name: Write keys (prod)
         if: env.ENV == 'prod'
         run: |
-          echo "${{ secrets.ansible_key_id_ansible_prod }}" > volume/keys/id_ansible
+          echo "${{ secrets.ansible_key_id_ansible_prod }}" > ./volume/keys/id_ansible
       - name: Ansible deploy
         run: |
           docker build . -t thefirstspine-org-ansible &&
