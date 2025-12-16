@@ -107,7 +107,7 @@ jobs:
                 env: dev
                 pg_database: '${{ secrets.ansible_conf_pg_database_dev }}'
                 pg_host: '${{ secrets.ansible_conf_pg_host_dev }}'
-                pg_port: ${{ secrets.ansible_conf_pg_port_dev }}
+                pg_port: '${{ secrets.ansible_conf_pg_port_dev }}'
                 pg_password: '${{ secrets.ansible_conf_pg_password_dev }}'
                 pg_username: '${{ secrets.ansible_conf_pg_username_dev }}'
                 # Host settings
@@ -143,7 +143,7 @@ jobs:
                 env: prod
                 pg_database: '${{ secrets.ansible_conf_pg_database_prod }}'
                 pg_host: '${{ secrets.ansible_conf_pg_host_prod }}'
-                pg_port: ${{ secrets.ansible_conf_pg_port_prod }}
+                pg_port: '${{ secrets.ansible_conf_pg_port_prod }}'
                 pg_password: '${{ secrets.ansible_conf_pg_password_prod }}'
                 pg_username: '${{ secrets.ansible_conf_pg_username_prod }}'
                 # Host settings
