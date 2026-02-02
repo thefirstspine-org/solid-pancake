@@ -24,7 +24,7 @@ jobs:
       - name: Change to next
         run: git checkout next
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Create Pull Request
         id: cpr
@@ -32,7 +32,7 @@ jobs:
           gh pr create --base master --head next --title "Release ${{ steps.timestamp.outputs.value }}" --body "Automated release PR" --fill
           gh pr merge ${{ steps.cpr.outputs.number }} --merge
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Tag Master
         run: |
@@ -41,4 +41,4 @@ jobs:
           git tag v-${{ steps.timestamp.outputs.value }}
           git push --tags
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
