@@ -7,22 +7,22 @@ import { Event } from '../event/event.entity';
 export class Session {
 
   @PrimaryColumn({length: 250})
-  session_id: string;
+  session_id?: string;
 
   @Column({length: 250})
-  product: string;
+  product?: string;
 
   @Column({length: 250, default: ''})
-  label: string;
+  label?: string;
 
   @Column({length: 250, default: ''})
-  version: string;
+  version?: string;
 
   @Column()
-  created_at: Date;
+  created_at?: Date;
 
   @OneToMany(() => Event, event => event.session_id)
-  events: Event[];
+  events?: Event[];
 
   @BeforeInsert()
   beforeInsert() {

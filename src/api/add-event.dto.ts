@@ -3,15 +3,15 @@ import { IsNotEmpty, IsArray } from 'class-validator';
 export class AddEventDto {
 
   @IsNotEmpty()
-  sessionId: string;
+  sessionId: string = '';
 
   @IsNotEmpty()
-  event: string;
+  event: string = '';
 
-  category: string;
+  category: string = '';
 
-  action?: string;
+  action?: string = '';
 
-  label?: string;
+  label?: string = '';
 
 }

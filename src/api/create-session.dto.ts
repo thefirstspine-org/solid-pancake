@@ -3,10 +3,9 @@ import { IsNotEmpty, IsArray } from 'class-validator';
 export class CreateSessionDto {
 
   @IsNotEmpty()
-  product: string;
+  product: string = '';
 
-  label?: string;
+  label?: string = '';
 
-  version?: string;
-
+  version?: string = '';
 }

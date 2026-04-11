@@ -28,12 +28,12 @@ export class EventService {
 
       // Return the entity
       return this.eventRepository.findOne({where: {event_id: result.identifiers[0].event_id}});
-    } catch (e) {
+    } catch (error: any) {
       // Log error before returning something
-      this.logsService.error(e.message, {
-        message: e.message,
-        name: e.name,
-        stack: e.stack,
+      this.logsService.error(error.message, {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
       });
       return null;
     }

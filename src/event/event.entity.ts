@@ -12,26 +12,26 @@ Source: https://github.com/typeorm/typeorm/issues/7738
 export class Event {
 
   @PrimaryGeneratedColumn()
-  event_id: number;
+  event_id?: number;
 
   @Column({length: 250})
   @ManyToOne(type => Session, session => session.session_id)
-  session_id: string;
+  session_id?: string;
 
   @Column({length: 512})
-  category: string;
+  category?: string;
 
   @Column({length: 512})
-  event: string;
+  event?: string;
 
   @Column({length: 512, default: ''})
-  action: string;
+  action?: string;
 
   @Column({length: 512, default: ''})
-  label: string;
+  label?: string;
 
   @Column()
-  created_at: Date;
+  created_at?: Date;
 
   @BeforeInsert()
   beforeInsert() {
@@ -39,5 +39,5 @@ export class Event {
   }
 
   @ManyToOne(() => Session, session => session.session_id)
-  session: Session;
+  session?: Session;
 }
