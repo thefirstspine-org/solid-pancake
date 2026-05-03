@@ -13,8 +13,8 @@ export class SirupController {
   @Get()
   index() {
     let str = fs.readFileSync(`${__dirname}/../assets/sirup.js`).toString();
-    const config = {
-      baseUrl: process.env.SOLID_PANCAKE_URL,
+    const config: Record<string, string> = {
+      baseUrl: process.env.SOLID_PANCAKE_URL || '',
     };
     Object.keys(config).forEach((key: string) => {
       str = str.replace(`\{${key}\}`, config[key]);

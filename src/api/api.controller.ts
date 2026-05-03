@@ -15,17 +15,17 @@ export class ApiController {
 
   @Post('session')
   async createSession(@Body() createSessionDto: CreateSessionDto) {
-    const session: Session = await this.apiService.createSession(
+    const session: Session | null = await this.apiService.createSession(
       createSessionDto.product,
       createSessionDto.label ? createSessionDto.label : '',
       createSessionDto.version ? createSessionDto.version : '',
     );
-    return session.session_id;
+    return session?.session_id;
   }
 
   @Post('event')
   async addEvent(@Body() addEventDto: AddEventDto) {
-    const event: Event = await this.apiService.addEvent(
+    const event: Event | null = await this.apiService.addEvent(
       addEventDto.sessionId,
       addEventDto.event,
       addEventDto.category,

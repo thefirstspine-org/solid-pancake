@@ -20,10 +20,10 @@ export class ApiService {
 
   public requestStats(type: string, offset: number, limit: number, filters?: {[key: string]: any}) {
     if (type === 'session') {
-      return this.sessionService.request(offset, limit, filters);
+      return this.sessionService.request(offset, limit, filters || {});
     }
     if (type === 'event') {
-      return this.eventService.request(offset, limit, filters);
+      return this.eventService.request(offset, limit, filters || {});
     }
   }
 

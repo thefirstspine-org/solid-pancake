@@ -31,12 +31,12 @@ export class SessionService {
 
       // Return the entity
       return this.sessionRepository.findOne({where: {session_id: sessionId}});
-    } catch (e) {
+    } catch (error: any) {
       // Log error before returning something
-      this.logsService.error(e.message, {
-        message: e.message,
-        name: e.name,
-        stack: e.stack,
+      this.logsService.error(error.message, {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
       });
       return null;
     }

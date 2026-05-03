@@ -11,6 +11,6 @@ async function bootstrap() {
   app.enableCors();
   app.use(RequestsLoggerMiddleware.use);
   app.useGlobalFilters(new ErrorFilter(new LogsService()));
-  await app.listen(process.env.PORT);
+  await app.listen(process.env?.PORT ?? 3000);
 }
 bootstrap();

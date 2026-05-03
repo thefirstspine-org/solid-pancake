@@ -4,7 +4,7 @@ export class RequestStatsDto {
 
   @IsNotEmpty()
   @IsEnum(['session', 'event'])
-  type: string;
+  type: string = 'session';
 
   @IsNumber({maxDecimalPlaces: 0})
   @Min(0)
@@ -16,6 +16,6 @@ export class RequestStatsDto {
   offset: number = 0;
 
   @IsObject()
-  filters: {[key: string]: any};
+  filters: {[key: string]: any} = {};
 
 }

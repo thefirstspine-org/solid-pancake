@@ -3,8 +3,8 @@
  */
 class Sirup {
 
-  protected config: ISirupConfig;
-  protected sessionId: string|null = null;
+  protected config: ISirupConfig | null = null;
+  protected sessionId: string | null = null;
 
   /**
    * Bootstrap Sirup. Make it accessible to window.sirup property globally.
@@ -15,7 +15,7 @@ class Sirup {
     this.config = config;
 
     // Store in Window
-    const windowRef = window || {sirup: null};
+    const windowRef: any = window || {sirup: null};
     // tslint:disable-next-line: no-string-literal
     windowRef['sirup'] = this;
   }
@@ -26,13 +26,13 @@ class Sirup {
    * @param label
    * @param version
    */
-  async persistantSession(product, label = '', version = '') {
+  async persistantSession(product: string, label: string = '', version: string = '') {
     // Get the local storage key
     const sessionStorageKey = `sirup-session-${product}-${label}-${version}`;
 
     // Get persisted session ID
-    const sessionIdPersistant: string|undefined = sessionStorage.getItem(sessionStorageKey);
-    if (sessionIdPersistant != undefined) {
+    const sessionIdPersistant: string | null = sessionStorage.getItem(sessionStorageKey);
+    if (sessionIdPersistant) {
       const sessionIdPersistantObject = JSON.parse(sessionIdPersistant);
       if (sessionIdPersistantObject) {
         this.sessionId = sessionIdPersistantObject.sessionId;
@@ -53,7 +53,7 @@ class Sirup {
    * @param label
    * @param version
    */
-  async session(product, label = '', version = '') {
+  async session(product: string, label: string = '', version: string = '') {
     this.sessionId = await this.call('session', {
       product,
       label,
@@ -69,7 +69,7 @@ class Sirup {
    * @param action
    * @param label
    */
-  event(event, category, action = '', label = '') {
+  event(event: string, category: string, action: string = '', label: string = '') {
     this.call('event', {
       sessionId: this.sessionId,
       event,
@@ -84,9 +84,9 @@ class Sirup {
    * @param endpoint
    * @param data
    */
-  protected async call(endpoint, data) {
+  protected async call(endpoint: string, data: { [key: string]: any }) {
     const response: Response = await fetch(
-      `${this.config.baseUrl}/api/${endpoint}`,
+      `${this.config?.baseUrl ?? ''}/api/${endpoint}`,
       {
         body: JSON.stringify(data),
         method: 'POST',
