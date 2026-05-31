@@ -110,8 +110,6 @@ export class EventService implements OnModuleDestroy {
     } catch (error: any) {
       // Log and re-queue events so they aren't lost
       this.logsService.error('Failed to flush events', {message: error?.message ?? error});
-      // put events back to the front of the buffer
-      this.buffer.unshift(...toFlush);
     } finally {
       this.flushing = false;
     }
